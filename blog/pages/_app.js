@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/inline-script-id */
 import '../styles/globals.css';
 import Script from 'next/script';
+import '../styles/Home.module.css';
 
 function MyApp({ Component, pageProps }) {
   return (

@@ -4,7 +4,9 @@ import Author from './child/author';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
-export default function hero() {
+
+export default function hero({ data }) {
+  const { blogs } = data;
   const backgroundImage = { background: 'url(/images/banner.png)no-repeat', backgroundPosition: 'right' };
 
   return (
@@ -17,46 +19,44 @@ export default function hero() {
           }}
           slidesPerView={1}
           loop={true}
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
           modules={[Autoplay]}
         >
-          <SwiperSlide>{Slide()}</SwiperSlide>
-          <SwiperSlide>{Slide()}</SwiperSlide>
-          <SwiperSlide>{Slide()}</SwiperSlide>
+          {blogs.map((item, index) => (
+            <SwiperSlide key={index}>{Slide(item)}</SwiperSlide>
+          ))}
         </Swiper>
       </div>
     </section>
   );
 }
 
-function Slide() {
+function Slide(data) {
+  const MAX_CONTENT_LENGTH = 200;
+
+  const truncatedContent = data.content_text.length > MAX_CONTENT_LENGTH ? data.content_text.slice(0, MAX_CONTENT_LENGTH) + '...' : data.content_text;
   return (
     <div className="grid md:grid-cols-2">
       <div className="image mr-5">
-        <Link href={'/'}>
-          <Image src={'/images/img1.jpg'} alt="Cover image" width={600} height={600} />
+        <Link href={`/posts/${data.id}`}>
+          <Image src={data.photo_url} alt="Cover image" width={600} height={600} />
         </Link>
       </div>
       <div className="info">
         <div className="cat">
           <Link href={'/'} className="text-orange-600 hover:text-orange-800">
-            Tekstil Haberleri
+            {data.category.toUpperCase()} Haberleri
           </Link>
           <Link href={'/'} className="text-gray-600 hover:text-gray-800">
-            - Haziran,2023
+            &nbsp;
+            {data.created_at.split('-')[0]}-{data.created_at.split('-')[1]}
           </Link>
         </div>
         <div className="title">
           <Link href={'/'} className="text-3xl md:text-6xl">
-            Borsa İstanbul'daki gelişmeler Tekstil sektörünü nasıl etkiledi ?
+            {data.title}
           </Link>
         </div>
-        <p className="text-black-500 py-3">
-          Dün yurt içinde veri akışı sakindi. BIST 100 endeksi günü %1,43 değer kaybederek 1.371,69 puandan kapatırken toplam işlem hacmi 15,8 milyar lira
-          seviyesinde gerçekleşti. Tüm sektör endeksleri düşüş gösterirken, en çok kaybettiren ise %3,85 ile tekstil, deri oldu. Dolar/TLkuru dün yataya yakın
-          kapanış yaşarken bu sabah itibariyle kurda dolar endeksindeki düşüşe paralel değer kaybı yaşanıyor.
-        </p>
+        <p className="text-black-500 py-3">{truncatedContent}</p>
         <Author />
       </div>
     </div>

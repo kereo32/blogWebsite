@@ -1,3 +1,4 @@
+import useSWR from 'swr';
 import Format from '../layout/format';
 
 import Hero from '../components/hero';

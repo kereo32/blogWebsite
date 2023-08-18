@@ -1,6 +1,4 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import Author from './child/author';
+import { BlogPost } from '../lib/helper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
@@ -22,43 +20,23 @@ export default function hero({ data }) {
           modules={[Autoplay]}
         >
           {blogs.map((item, index) => (
-            <SwiperSlide key={index}>{Slide(item)}</SwiperSlide>
+            <SwiperSlide key={index}>
+              {BlogPost(item, {
+                width: 600,
+                height: 500,
+                maxContentLenght: 200,
+                firstDividerClasses: 'grid md:grid-cols-2',
+                imgDividerClasses: 'image mr-5',
+                infoDividerClasses: 'info',
+                catDividerClasses: 'cat',
+                titleDividerClasses: 'title',
+                titleTextClasses: 'text-3xl md:text-6xl',
+                contentClasses: 'text-black-500 py-3',
+              })}
+            </SwiperSlide>
           ))}
         </Swiper>
       </div>
     </section>
-  );
-}
-
-function Slide(data) {
-  const MAX_CONTENT_LENGTH = 200;
-
-  const truncatedContent = data.content_text.length > MAX_CONTENT_LENGTH ? data.content_text.slice(0, MAX_CONTENT_LENGTH) + '...' : data.content_text;
-  return (
-    <div className="grid md:grid-cols-2">
-      <div className="image mr-5">
-        <Link href={`/posts/${data.id}`}>
-          <Image src={data.photo_url} alt="Cover image" width={600} height={600} />
-        </Link>
-      </div>
-      <div className="info">
-        <div className="cat">
-          <Link href={'/'} className="text-orange-600 hover:text-orange-800">
-            {data.category.toUpperCase()} Haberleri
-          </Link>
-          <Link href={'/'} className="text-gray-600 hover:text-gray-800">
-            &nbsp;
-            {data.created_at.split('-')[0]}-{data.created_at.split('-')[1]}
-          </Link>
-        </div>
-        <div className="title">
-          <Link href={'/'} className="text-3xl md:text-6xl">
-            {data.title}
-          </Link>
-        </div>
-        <p className="text-black-500 py-3">{truncatedContent}</p>
-        <Author />
-      </div>
-    </div>
   );
 }

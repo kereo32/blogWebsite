@@ -28,10 +28,10 @@ export default function Page({ data, relatedPosts }) {
 export async function getStaticProps({ params }) {
   const postId = params.postId;
 
-  const postResponse = await fetch(`https://api.slingacademy.com/v1/sample-data/blog-posts/${postId}`);
+  const postResponse = await fetch(`https://api.slingacademy.com/v1/sample-data/blog-posts/${postId}`, { cache: 'force-cache' });
   const postData = await postResponse.json();
 
-  const relatedResponse = await fetch(`https://api.slingacademy.com/v1/sample-data/blog-posts?category=${postData.category}&limit=3`);
+  const relatedResponse = await fetch(`https://api.slingacademy.com/v1/sample-data/blog-posts?category=${postData.category}&limit=3`, { cache: 'force-cache' });
   const relatedPostsData = await relatedResponse.json();
 
   return {
@@ -43,7 +43,7 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  const response = await fetch('https://api.slingacademy.com/v1/sample-data/blog-posts?limit=10');
+  const response = await fetch('https://api.slingacademy.com/v1/sample-data/blog-posts?limit=10', { cache: 'force-cache' });
   const data = await response.json();
 
   const paths = data.blogs.map((value) => {

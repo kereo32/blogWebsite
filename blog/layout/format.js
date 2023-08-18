@@ -5,7 +5,7 @@ export default function format({ children }) {
   return (
     <>
       <Head>
-        <title>Tekstil Şov Evi</title>
+        <title>Blog Website</title>
       </Head>
       <Header />
       <main>{children}</main>

@@ -1,5 +1,6 @@
 import useSWR from 'swr';
 import Format from '../layout/format';
+import db from '../lib/db';
 
 import Hero from '../components/hero';
 import NewsSection from '../components/newsSection';
@@ -24,6 +25,13 @@ async function fetchBlogs() {
 
 export async function getStaticProps() {
   const data = await fetchBlogs();
+  db.query('SELECT * FROM BlogPosts', (error, results) => {
+    if (error) {
+      console.error('Error fetching data:', error);
+      return;
+    }
+    console.log('Data fetched successfully', results);
+  });
   return {
     props: {
       data,
